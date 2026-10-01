@@ -4,34 +4,36 @@ import Reveal from "@/components/common/Reveal";
 
 export default function About() {
   return (
-    <section id="about" className="py-8">
+    <section id="about" className="py-24 md:py-32 relative">
       <div className="section-container">
         
-        
         <Reveal>
-          <div className="mb-16">
-            <p className="text-[#a194f7] uppercase tracking-[0.25em] text-sm font-bold">
+          <div className="mb-14 select-none">
+            <span className="text-[#a194f7] uppercase tracking-[0.25em] text-xs font-bold block mb-3">
               ABOUT ME
-            </p>
-            <h2 className="text-5xl md:text-7xl font-bold mt-6 tracking-tight text-white">
-              Building modern
-              <br />
-              <span className="text-gradient-accent">digital experiences.</span>
+            </span>
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white leading-[1.1]">
+              Building modern{" "}
+              <span className="text-gradient-accent block sm:inline">digital experiences.</span>
             </h2>
           </div>
         </Reveal>
 
-        <div className="grid lg:grid-cols-[2fr_1fr] gap-6">
-          <Reveal delay={0.2}>
-            <AboutText />
-          </Reveal>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          <div className="lg:col-span-7 xl:col-span-8">
+            <Reveal delay={0.2}>
+              <AboutText />
+            </Reveal>
+          </div>
           
-          <Reveal delay={0.4}>
-            <AboutStats />
-          </Reveal>
+          <div className="lg:col-span-5 xl:col-span-4">
+            <Reveal delay={0.35}>
+              <AboutStats />
+            </Reveal>
+          </div>
         </div>
         
       </div>
     </section>
   );
-}
+}

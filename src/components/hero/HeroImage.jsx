@@ -17,19 +17,19 @@ export default function HeroImage() {
 
   useEffect(() => {
     let animationFrameId;
-    const speed = 0.00022;
+    const speed = 0.00025;
 
     const getDimensions = () => {
-      if (!containerRef.current) return { radiusX: 390, radiusY: 110 };
+      if (!containerRef.current) return { radiusX: 230, radiusY: 85 };
       const width = containerRef.current.clientWidth;
-      if (width < 500) {
-        return { radiusX: 180, radiusY: 65 };
+      if (width < 450) {
+        return { radiusX: 140, radiusY: 55 };
       } else if (width < 768) {
-        return { radiusX: 240, radiusY: 80 };
+        return { radiusX: 180, radiusY: 65 };
       } else if (width < 1200) {
-        return { radiusX: 320, radiusY: 95 };
+        return { radiusX: 210, radiusY: 75 };
       }
-      return { radiusX: 390, radiusY: 110 };
+      return { radiusX: 240, radiusY: 85 };
     };
 
     let { radiusX, radiusY } = getDimensions();
@@ -48,13 +48,13 @@ export default function HeroImage() {
         const offset = i * ((Math.PI * 2) / SKILLS.length);
         const angle = time * speed + offset;
         const x = Math.cos(angle) * radiusX;
-        const y = Math.sin(angle) * radiusY * 0.45;
+        const y = Math.sin(angle) * radiusY * 0.5;
         const depth = Math.sin(angle); // -1 (back) to +1 (front)
-        const scale = 0.85 + ((depth + 1) / 2) * 0.28;
-        const opacity = 0.5 + ((depth + 1) / 2) * 0.5;
+        const scale = 0.85 + ((depth + 1) / 2) * 0.22;
+        const opacity = 0.45 + ((depth + 1) / 2) * 0.55;
         const zIndex = 10 + Math.round(depth * 10);
 
-        el.style.transform = `translate(-50%, -50%) translate3d(${x}px, ${y - 35}px, 0) scale(${scale})`;
+        el.style.transform = `translate(-50%, -50%) translate3d(${x}px, ${y - 25}px, 0) scale(${scale})`;
         el.style.opacity = opacity;
         el.style.zIndex = zIndex;
       });
@@ -86,18 +86,18 @@ export default function HeroImage() {
           {/* Front Screen Display */}
           <div className="hero-laptop-face hero-laptop-screen">
             <div className="hero-screen-inner">
-              <div>
+              <div className="font-semibold text-zinc-300">
                 &gt; building<span className="hero-screen-cursor"></span>
               </div>
               <div className="text-zinc-400 font-medium">react.js</div>
-              <div className="text-zinc-500">Agentic AI</div>
+              <div className="text-zinc-500 text-[11px]">Agentic AI</div>
             </div>
           </div>
 
-          {/* Back Screen Lid (prevents backwards mirror artifact) */}
+          {/* Back Screen Lid */}
           <div className="hero-laptop-face hero-laptop-lid">
             <div className="hero-laptop-lid-logo">
-              <div className="w-2.5 h-2.5 rounded-full bg-[#a99bff] shadow-[0_0_8px_#a99bff]" />
+              <div className="w-2.5 h-2.5 rounded-full bg-[#a194f7] shadow-[0_0_8px_#a194f7]" />
             </div>
           </div>
 
@@ -128,4 +128,4 @@ export default function HeroImage() {
       </div>
     </div>
   );
-}
+}

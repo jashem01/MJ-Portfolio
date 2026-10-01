@@ -6,70 +6,91 @@ import projects from "@/data/projects";
 
 export default function Projects() {
   return (
-    <section id="projects" className="py-32 bg-[#050505] relative overflow-hidden">
+    <section id="projects" className="py-24 md:py-32 relative bg-[#030303]/80">
       <div className="section-container relative z-10">
         
         {/* Heading */}
-        <div className="mb-24 select-none">
+        <div className="mb-14 select-none">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="flex items-center gap-4"
+            className="flex items-center gap-3"
           >
-            <h2 className="text-6xl md:text-8xl font-bold tracking-tight text-white">
-              My
-            </h2>
-            <h2 className="text-6xl md:text-8xl font-bold tracking-tight text-gradient-accent">
-              Work
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white leading-tight">
+              My <span className="text-gradient-accent">Work</span>
             </h2>
           </motion.div>
         </div>
 
-      </div>
-
-      {/* Horizontal Project Grid */}
-      <div className="w-full border-t border-zinc-800/50">
-        <div className="flex flex-col lg:flex-row w-full overflow-x-auto pb-12 hide-scrollbar">
+        {/* Responsive Project Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10">
           {projects.map((project, index) => (
             <motion.div 
               key={index}
-              initial={{ opacity: 0, opacity: 0 }}
-              whileInView={{ opacity: 1, opacity: 1 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.6, delay: index * 0.2 }}
-              className="w-full lg:min-w-[600px] lg:w-[45vw] flex-shrink-0 border-b lg:border-b-0 lg:border-r border-zinc-800/50 p-8 md:p-16 relative group"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.7, delay: index * 0.15, ease: [0.16, 1, 0.3, 1] }}
+              className="dashed-frame p-8 md:p-10 backdrop-blur-md bg-black/40 group relative overflow-hidden flex flex-col justify-between"
             >
-              
-              {/* Number and Title Header */}
-              <div className="flex justify-between items-start mb-16 relative">
-                {/* Glowing Circle behind Number */}
-                <div className="absolute top-4 left-4 w-16 h-16 bg-[#d0c8ff] rounded-full mix-blend-screen blur-xl opacity-60 group-hover:scale-150 transition-transform duration-700 pointer-events-none"></div>
-                
-                <h3 className="text-7xl font-black text-white relative z-10 tracking-tighter">
-                  {String(index + 1).padStart(2, '0')}
-                </h3>
-                <div className="text-right">
-                  <h4 className="text-2xl font-bold text-white mb-1">{project.title}</h4>
-                  <p className="text-zinc-500 font-medium">Web Project</p>
+              {/* Corner Notches */}
+              <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-white/50 group-hover:border-[#a194f7] transition-colors"></div>
+              <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-white/50 group-hover:border-[#a194f7] transition-colors"></div>
+              <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-white/50 group-hover:border-[#a194f7] transition-colors"></div>
+              <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-white/50 group-hover:border-[#a194f7] transition-colors"></div>
+
+              <div>
+                {/* Number and Title Header */}
+                <div className="flex justify-between items-start mb-8 relative">
+                  {/* Subtle Soft Glow behind Number */}
+                  <div className="absolute -top-2 -left-2 w-16 h-16 bg-[#a194f7]/20 rounded-full blur-xl pointer-events-none group-hover:scale-125 transition-transform duration-500" />
+                  
+                  <span 
+                    className="text-5xl md:text-6xl font-black text-transparent relative z-10 tracking-tighter select-none"
+                    style={{ WebkitTextStroke: "1px rgba(255,255,255,0.8)" }}
+                  >
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                  <div className="text-right">
+                    <h3 className="text-2xl md:text-3xl font-bold text-white mb-1 group-hover:text-[#c4b9ff] transition-colors">
+                      {project.title}
+                    </h3>
+                    <p className="text-[#a194f7] text-xs font-semibold uppercase tracking-[0.2em]">
+                      Web Project
+                    </p>
+                  </div>
+                </div>
+
+                {/* Description if present */}
+                {project.description && (
+                  <p className="text-zinc-300 text-sm md:text-base leading-relaxed mb-6 font-normal">
+                    {project.description}
+                  </p>
+                )}
+
+                {/* Tools and Description */}
+                <div className="mb-8">
+                  <p className="text-zinc-400 font-semibold text-xs uppercase tracking-wider mb-3">
+                    Tools &amp; Features
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {project.technologies.map((tech, tIdx) => (
+                      <span key={tIdx} className="skill-pill text-xs py-1 px-3">
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </div>
 
-              {/* Tools and Description */}
-              <div className="mb-12">
-                <p className="text-white font-medium text-lg mb-4">Tools and features</p>
-                <p className="text-zinc-400 text-sm md:text-base leading-relaxed max-w-md">
-                  {project.technologies.join(", ")}
-                </p>
-              </div>
-
               {/* Project Screenshot */}
-              <div className="relative w-full aspect-video rounded-md overflow-hidden bg-zinc-900 border border-zinc-800/50 group-hover:border-zinc-700 transition-colors duration-500">
+              <div className="relative w-full aspect-[16/10] rounded-xl overflow-hidden bg-zinc-950 border border-white/10 group-hover:border-[#a194f7]/40 transition-colors duration-500">
                 <Image
                   src={project.image}
                   alt={project.title}
                   fill
-                  className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
+                  className="object-cover opacity-85 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
                 />
               </div>
 
@@ -79,4 +100,4 @@ export default function Projects() {
       </div>
     </section>
   );
-}
+}

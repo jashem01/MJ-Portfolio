@@ -7,8 +7,7 @@ import Sidebar from "@/components/sidebar/Sidebar";
 import Navbar from "@/components/common/Navbar";
 import Hero from "@/components/hero/Hero";
 
-// Lazy load all below-the-fold components to improve initial page load speed
-const Reveal = dynamic(() => import("@/components/common/Reveal"));
+// Lazy load components below hero for optimal performance
 const About = dynamic(() => import("@/components/about/About"), { ssr: false });
 const Skills = dynamic(() => import("@/components/skills/Skills"), { ssr: false });
 const Experience = dynamic(() => import("@/components/experience/Experience"), { ssr: false });
@@ -27,7 +26,7 @@ export default function Home() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 1800);
+    }, 1500);
 
     return () => clearTimeout(timer);
   }, []);
@@ -37,37 +36,27 @@ export default function Home() {
       <Loader loading={loading} />
 
       {!loading && (
-        <>
+        <div className="relative min-h-screen bg-[#030303] text-white selection:bg-[#a194f7]/30 selection:text-white">
           <Sidebar />
           <Navbar />
-          <Hero />
           
-          <Reveal>
+          <main className="relative z-10 flex flex-col gap-0">
+            <Hero />
             <About />
-          </Reveal>
-          <Reveal>
             <Skills />
-          </Reveal>
-          <Reveal>
             <Experience />
-          </Reveal>
-          <Reveal>
             <Projects />
-          </Reveal>
-          <Reveal>
             <Github />
-          </Reveal>
-          <Reveal>
             <Contact />
-          </Reveal>
+          </main>
           
           <Footer />
           <CustomCursor />
           <BackgroundEffects />
           <GlowCursor />
           <Spotlight />
-        </>
+        </div>
       )}
     </>
   );
-}
+}
