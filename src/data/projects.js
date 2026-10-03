@@ -16,7 +16,7 @@ const projects = [
 
     demo: "#",
 
-    image: "/images/projects/movie-station.png",
+    image: "/images/projects/movie-station.jpg",
   },
 
   {
@@ -36,7 +36,7 @@ const projects = [
 
     demo: "#",
 
-    image: "/images/projects/bookdot.png",
+    image: "/images/projects/bookdot.jpg",
   },
 ];
 

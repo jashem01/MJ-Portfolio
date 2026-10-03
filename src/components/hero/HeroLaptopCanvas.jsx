@@ -124,8 +124,8 @@ function FloatingSkill({ name, initialPosition, speed = 1.0, delay = 0 }) {
   return (
     <group ref={ref}>
       <Html distanceFactor={5.5} center>
-        <div className="px-4 py-2 rounded-full border border-zinc-800/80 bg-black/80 backdrop-blur-md text-white text-xs font-semibold tracking-wider whitespace-nowrap hover:border-[#a194f7] transition-all duration-300 shadow-[0_0_20px_rgba(0,0,0,0.6)] flex items-center gap-2 select-none pointer-events-none">
-          <div className="w-2 h-2 rounded-full bg-[#a194f7] shadow-[0_0_8px_#a194f7]"></div>
+        <div className="px-3.5 py-1.5 rounded-full border border-white/10 bg-[#111116]/90 backdrop-blur-md text-white text-xs font-semibold tracking-wide whitespace-nowrap shadow-[0_6px_20px_rgba(0,0,0,0.6)] flex items-center gap-2 select-none pointer-events-none">
+          <div className="w-2 h-2 rounded-full bg-[#A194F7] shadow-[0_0_8px_#A194F7]"></div>
           {name}
         </div>
       </Html>

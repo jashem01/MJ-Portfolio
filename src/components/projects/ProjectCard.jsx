@@ -13,19 +13,19 @@ export default function ProjectCard({ project, index = 0 }) {
       viewport={{ once: true, margin: "-100px" }}
       transition={{ duration: 0.6, delay: index * 0.2, ease: "easeOut" }}
       whileHover={{
-        y: -10,
+        y: -6,
         boxShadow: isFeatured 
-          ? "0 0 50px rgba(250, 210, 140, 0.12)" 
-          : "0 0 30px rgba(250, 210, 140, 0.06)",
-        borderColor: "rgba(250, 210, 140, 0.2)"
+          ? "0 16px 36px -8px rgba(0, 0, 0, 0.7), 0 0 25px rgba(161, 148, 247, 0.15)" 
+          : "0 12px 28px -6px rgba(0, 0, 0, 0.6), 0 0 15px rgba(161, 148, 247, 0.1)",
+        borderColor: "rgba(161, 148, 247, 0.35)"
       }}
-      className={`glass-card p-6 group relative transition-colors duration-300 ${
+      className={`glass-card p-6 group relative transition-colors duration-200 ${
         isFeatured ? "bg-zinc-900/60" : ""
       }`}
     >
       {/* Subtle glow for featured card */}
       {isFeatured && (
-        <div className="absolute inset-0 bg-[rgba(250,210,140,0.03)] rounded-3xl pointer-events-none" />
+        <div className="absolute inset-0 bg-[#A194F7]/[0.03] rounded-[14px] pointer-events-none" />
       )}
 
       <div className="grid lg:grid-cols-2 gap-8 items-center relative z-10">

@@ -40,7 +40,7 @@ export default function SkillsMarquee() {
   return (
     <section
       ref={sectionRef}
-      className="bg-[#0C0C0C] pt-24 sm:pt-32 md:pt-40 pb-10 overflow-hidden w-full select-none"
+      className="bg-[#0A0A0E] pt-16 sm:pt-24 md:pt-32 pb-8 overflow-hidden w-full select-none"
     >
       <div className="flex flex-col gap-3 w-full">
         {/* Row 1 - Moves Right */}
@@ -56,7 +56,7 @@ export default function SkillsMarquee() {
               src={src}
               alt="Design Showcase"
               loading="lazy"
-              className="w-[420px] h-[270px] rounded-2xl object-cover flex-shrink-0"
+              className="w-[420px] h-[270px] rounded-xl object-cover flex-shrink-0 border border-white/10"
             />
           ))}
         </div>
@@ -74,7 +74,7 @@ export default function SkillsMarquee() {
               src={src}
               alt="Design Showcase"
               loading="lazy"
-              className="w-[420px] h-[270px] rounded-2xl object-cover flex-shrink-0"
+              className="w-[420px] h-[270px] rounded-xl object-cover flex-shrink-0 border border-white/10"
             />
           ))}
         </div>

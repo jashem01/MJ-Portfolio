@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 
 const SKILLS = [
   "JavaScript",
@@ -14,10 +15,26 @@ const SKILLS = [
 export default function HeroImage() {
   const containerRef = useRef(null);
   const pillRefs = useRef([]);
+  const [isTouch, setIsTouch] = useState(false);
+
+  // Mouse tilt motion values
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const springConfig = { damping: 30, stiffness: 200, mass: 0.8 };
+  const smoothMouseX = useSpring(mouseX, springConfig);
+  const smoothMouseY = useSpring(mouseY, springConfig);
+
+  const stageRotateX = useTransform(smoothMouseY, [-0.5, 0.5], ["8deg", "-8deg"]);
+  const stageRotateY = useTransform(smoothMouseX, [-0.5, 0.5], ["-12deg", "12deg"]);
 
   useEffect(() => {
+    if (typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches) {
+      setIsTouch(true);
+    }
+
     let animationFrameId;
-    const speed = 0.00025;
+    const speed = 0.00028;
 
     const getDimensions = () => {
       if (!containerRef.current) return { radiusX: 230, radiusY: 85 };
@@ -27,9 +44,9 @@ export default function HeroImage() {
       } else if (width < 768) {
         return { radiusX: 180, radiusY: 65 };
       } else if (width < 1200) {
-        return { radiusX: 210, radiusY: 75 };
+        return { radiusX: 215, radiusY: 78 };
       }
-      return { radiusX: 240, radiusY: 85 };
+      return { radiusX: 245, radiusY: 88 };
     };
 
     let { radiusX, radiusY } = getDimensions();
@@ -50,8 +67,8 @@ export default function HeroImage() {
         const x = Math.cos(angle) * radiusX;
         const y = Math.sin(angle) * radiusY * 0.5;
         const depth = Math.sin(angle); // -1 (back) to +1 (front)
-        const scale = 0.85 + ((depth + 1) / 2) * 0.22;
-        const opacity = 0.45 + ((depth + 1) / 2) * 0.55;
+        const scale = 0.85 + ((depth + 1) / 2) * 0.24;
+        const opacity = 0.4 + ((depth + 1) / 2) * 0.6;
         const zIndex = 10 + Math.round(depth * 10);
 
         el.style.transform = `translate(-50%, -50%) translate3d(${x}px, ${y - 25}px, 0) scale(${scale})`;
@@ -70,9 +87,30 @@ export default function HeroImage() {
     };
   }, []);
 
+  const handlePointerMove = (e) => {
+    if (isTouch || !containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const nx = (e.clientX - rect.left) / rect.width - 0.5;
+    const ny = (e.clientY - rect.top) / rect.height - 0.5;
+    mouseX.set(nx);
+    mouseY.set(ny);
+  };
+
+  const handlePointerLeave = () => {
+    mouseX.set(0);
+    mouseY.set(0);
+  };
+
   return (
-    <div
+    <motion.div
       ref={containerRef}
+      onMouseMove={handlePointerMove}
+      onMouseLeave={handlePointerLeave}
+      style={{
+        perspective: 1200,
+        rotateX: isTouch ? 0 : stageRotateX,
+        rotateY: isTouch ? 0 : stageRotateY,
+      }}
       className="hero-stage w-full h-full relative flex items-center justify-center select-none"
     >
       {/* Ambient background glow & rings */}
@@ -126,6 +164,7 @@ export default function HeroImage() {
           </div>
         ))}
       </div>
-    </div>
+    </motion.div>
   );
-}
+}
+

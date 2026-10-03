@@ -29,21 +29,21 @@ export default function CaseStudyModal({ project, isOpen, onClose, onSelectNext 
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="dashed-frame relative w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-2xl bg-[#08070d] border border-white/15 p-6 sm:p-10 text-white z-10 shadow-2xl"
+            className="dashed-frame relative w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-xl bg-[#0A0A0E] border border-white/15 p-5 sm:p-8 md:p-10 text-white z-10 shadow-2xl"
           >
             {/* L-shaped corner notches */}
-            <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-white z-20"></div>
-            <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-white z-20"></div>
-            <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-white z-20"></div>
-            <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-white z-20"></div>
+            <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-white/60 z-20"></div>
+            <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-white/60 z-20"></div>
+            <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-white/60 z-20"></div>
+            <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-white/60 z-20"></div>
 
             {/* Header & Close Button */}
-            <div className="flex items-center justify-between pb-6 border-b border-white/10 mb-8">
+            <div className="flex items-center justify-between pb-5 sm:pb-6 border-b border-white/10 mb-6 sm:mb-8">
               <div>
-                <span className="text-xs font-mono text-[#a194f7] tracking-widest uppercase">
-                  // CASE STUDY ARCHIVE
+                <span className="text-xs font-mono text-[#A194F7] tracking-widest uppercase">
+                  {"// CASE STUDY ARCHIVE"}
                 </span>
-                <h2 className="text-2xl sm:text-4xl font-black tracking-tight mt-1 text-white">
+                <h2 className="text-xl sm:text-3xl font-bold tracking-tight mt-1 text-white">
                   {project.title}
                 </h2>
               </div>
@@ -51,25 +51,25 @@ export default function CaseStudyModal({ project, isOpen, onClose, onSelectNext 
               <button
                 onClick={onClose}
                 aria-label="Close modal"
-                className="p-2.5 rounded-full bg-white/[0.05] border border-white/10 text-zinc-400 hover:text-white hover:bg-white/10 transition-colors"
+                className="p-2.5 rounded-full bg-white/[0.05] border border-white/10 text-[#9BA1AD] hover:text-white hover:bg-white/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A194F7]"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {/* Hero Image */}
-            <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-zinc-900 border border-white/10 mb-8">
+            <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-zinc-900 border border-white/10 mb-6 sm:mb-8">
               <Image
                 src={project.image}
                 alt={project.title}
                 fill
                 className="object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#08070d] via-transparent to-transparent opacity-60" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0E] via-transparent to-transparent opacity-60" />
             </div>
 
             {/* Project Overview Metadata Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-5 rounded-xl bg-white/[0.02] border border-white/10 mb-8 font-mono text-xs">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5 sm:gap-4 p-4 sm:p-5 rounded-xl bg-white/[0.02] border border-white/10 mb-6 sm:mb-8 font-mono text-xs">
               <div>
                 <span className="text-zinc-500 uppercase block mb-1">ROLE</span>
                 <span className="text-white font-semibold">{project.role || "Lead Frontend"}</span>
@@ -84,20 +84,20 @@ export default function CaseStudyModal({ project, isOpen, onClose, onSelectNext 
               </div>
               <div>
                 <span className="text-zinc-500 uppercase block mb-1">CATEGORY</span>
-                <span className="text-[#a194f7] font-semibold">{project.category}</span>
+                <span className="text-[#A194F7] font-semibold">{project.category}</span>
               </div>
             </div>
 
             {/* Tech Stack Pills */}
-            <div className="mb-8">
-              <span className="text-xs font-mono text-zinc-400 uppercase tracking-widest block mb-3">
-                // TECHNOLOGIES &amp; ARCHITECTURE
+            <div className="mb-6 sm:mb-8">
+              <span className="text-xs font-mono text-[#9BA1AD] uppercase tracking-widest block mb-3">
+                {"// TECHNOLOGIES & ARCHITECTURE"}
               </span>
               <div className="flex flex-wrap gap-2">
                 {project.technologies.map((tech) => (
                   <span
                     key={tech}
-                    className="px-3 py-1 rounded-full text-xs font-mono bg-[#8b7cf6]/10 border border-[#a194f7]/30 text-white"
+                    className="px-3 py-1 rounded-full text-xs font-mono bg-[#A194F7]/10 border border-[#A194F7]/30 text-white"
                   >
                     {tech}
                   </span>
@@ -107,23 +107,23 @@ export default function CaseStudyModal({ project, isOpen, onClose, onSelectNext 
 
             {/* Problem & Solution */}
             {caseStudy && (
-              <div className="grid md:grid-cols-2 gap-6 mb-8">
-                <div className="p-6 rounded-xl bg-white/[0.02] border border-white/10">
+              <div className="grid md:grid-cols-2 gap-5 sm:gap-6 mb-6 sm:mb-8">
+                <div className="p-5 sm:p-6 rounded-xl bg-white/[0.02] border border-white/10">
                   <h4 className="text-xs font-mono text-rose-400 uppercase tracking-widest mb-2 flex items-center gap-2">
                     <span className="w-1.5 h-1.5 rounded-full bg-rose-400"></span>
                     THE PROBLEM
                   </h4>
-                  <p className="text-zinc-300 text-sm leading-relaxed">
+                  <p className="text-[#9BA1AD] text-sm leading-relaxed">
                     {caseStudy.problem}
                   </p>
                 </div>
 
-                <div className="p-6 rounded-xl bg-white/[0.02] border border-white/10">
+                <div className="p-5 sm:p-6 rounded-xl bg-white/[0.02] border border-white/10">
                   <h4 className="text-xs font-mono text-emerald-400 uppercase tracking-widest mb-2 flex items-center gap-2">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
                     THE SOLUTION
                   </h4>
-                  <p className="text-zinc-300 text-sm leading-relaxed">
+                  <p className="text-[#9BA1AD] text-sm leading-relaxed">
                     {caseStudy.solution}
                   </p>
                 </div>
@@ -132,14 +132,14 @@ export default function CaseStudyModal({ project, isOpen, onClose, onSelectNext 
 
             {/* Key Results / Highlights */}
             {caseStudy?.highlights && (
-              <div className="mb-8 p-6 rounded-xl bg-white/[0.02] border border-white/10">
-                <h4 className="text-xs font-mono text-[#a194f7] uppercase tracking-widest mb-4">
-                  // CORE HIGHLIGHTS &amp; METRICS
+              <div className="mb-6 sm:mb-8 p-5 sm:p-6 rounded-xl bg-white/[0.02] border border-white/10">
+                <h4 className="text-xs font-mono text-[#A194F7] uppercase tracking-widest mb-3 sm:mb-4">
+                  {"// CORE HIGHLIGHTS & METRICS"}
                 </h4>
                 <div className="grid sm:grid-cols-2 gap-3">
                   {caseStudy.highlights.map((item, idx) => (
-                    <div key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-zinc-300">
-                      <CheckCircle2 className="w-4 h-4 text-[#a194f7] flex-shrink-0 mt-0.5" />
+                    <div key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-[#F1F0F7]">
+                      <CheckCircle2 className="w-4 h-4 text-[#A194F7] flex-shrink-0 mt-0.5" />
                       <span>{item}</span>
                     </div>
                   ))}
@@ -148,14 +148,14 @@ export default function CaseStudyModal({ project, isOpen, onClose, onSelectNext 
             )}
 
             {/* Action Buttons & Next Project */}
-            <div className="flex flex-wrap items-center justify-between gap-4 pt-6 border-t border-white/10">
+            <div className="flex flex-wrap items-center justify-between gap-4 pt-5 sm:pt-6 border-t border-white/10">
               <div className="flex items-center gap-3">
                 {project.github && (
                   <a
                     href={project.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/[0.05] border border-white/15 text-xs font-mono hover:bg-white/10 hover:border-white/30 transition-colors"
+                    className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/[0.05] border border-white/15 text-xs font-mono hover:bg-white/10 hover:border-white/30 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A194F7]"
                   >
                     <FaGithub className="w-4 h-4" />
                     <span>View Repository</span>
@@ -166,7 +166,7 @@ export default function CaseStudyModal({ project, isOpen, onClose, onSelectNext 
                     href={project.demo}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#8b7cf6] to-[#c4b8ff] text-black font-semibold text-xs font-mono hover:opacity-90 transition-opacity"
+                    className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-black font-semibold text-xs font-mono hover:bg-[#C8C0FF] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A194F7]"
                   >
                     <span>Launch Project</span>
                     <ArrowUpRight className="w-4 h-4" />
@@ -177,7 +177,7 @@ export default function CaseStudyModal({ project, isOpen, onClose, onSelectNext 
               {onSelectNext && (
                 <button
                   onClick={onSelectNext}
-                  className="flex items-center gap-2 text-xs font-mono text-zinc-400 hover:text-white transition-colors"
+                  className="flex items-center gap-2 text-xs font-mono text-[#9BA1AD] hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A194F7]"
                 >
                   <span>NEXT PROJECT</span>
                   <ChevronRight className="w-4 h-4" />

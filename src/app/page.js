@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import dynamic from "next/dynamic";
 import Loader from "@/components/loader/Loader";
 import Sidebar from "@/components/sidebar/Sidebar";
@@ -17,26 +17,17 @@ const Contact = dynamic(() => import("@/components/contact/Contact"), { ssr: fal
 const Footer = dynamic(() => import("@/components/footer/Footer"), { ssr: false });
 const CustomCursor = dynamic(() => import("@/components/cursor/CustomCursor"), { ssr: false });
 const BackgroundEffects = dynamic(() => import("@/components/common/BackgroundEffects"), { ssr: false });
-const GlowCursor = dynamic(() => import("../components/common/GlowCursor"), { ssr: false });
 const Spotlight = dynamic(() => import("@/components/common/Spotlight"), { ssr: false });
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 1500);
-
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
     <>
-      <Loader loading={loading} />
+      <Loader onComplete={() => setLoading(false)} />
 
       {!loading && (
-        <div className="relative min-h-screen bg-[#030303] text-white selection:bg-[#a194f7]/30 selection:text-white">
+        <div className="relative min-h-screen bg-bg text-text-primary selection:bg-accent/30 selection:text-white">
           <Sidebar />
           <Navbar />
           
@@ -53,10 +44,9 @@ export default function Home() {
           <Footer />
           <CustomCursor />
           <BackgroundEffects />
-          <GlowCursor />
           <Spotlight />
         </div>
       )}
     </>
   );
-}
+}
