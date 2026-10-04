@@ -91,15 +91,10 @@ export default function Navbar() {
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
             aria-label="Mohammed Jashem Home"
-            className="w-9 h-9 rounded-full relative group flex items-center justify-center p-[1.5px] transition-transform duration-300 hover:scale-110 flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            className="w-9 h-9 rounded-full relative hover-icon flex items-center justify-center flex-shrink-0 focus-visible:outline-none focus-visible:ring-2"
           >
-            {/* Reversible Gradient Ring Border on Hover */}
-            <span
-              className="absolute inset-0 rounded-full bg-[linear-gradient(90deg,hsl(var(--accent-lavender)),hsl(var(--accent-deep)))] group-hover:bg-[linear-gradient(270deg,hsl(var(--accent-lavender)),hsl(var(--accent-deep)))] transition-all duration-500"
-              aria-hidden="true"
-            />
             {/* Inner Dark Circle */}
-            <span className="relative z-10 w-full h-full rounded-full bg-bg flex items-center justify-center">
+            <span className="relative z-10 w-full h-full rounded-full bg-bg border border-stroke flex items-center justify-center">
               <span className="font-display italic text-[13px] text-text-primary tracking-tight font-normal">
                 MJ
               </span>
@@ -118,11 +113,11 @@ export default function Navbar() {
                   key={link.id}
                   href={link.href}
                   onClick={(e) => handleLinkClick(e, link.href)}
-                  className={`text-xs sm:text-sm rounded-full px-3.5 sm:px-4 py-1.5 sm:py-2 transition-all duration-200 font-medium ${
+                  className={`text-xs sm:text-sm rounded-full px-3.5 sm:px-4 py-1.5 sm:py-2 font-medium hover-link ${
                     isActive
                       ? "text-text-primary bg-stroke/50 shadow-inner font-semibold"
-                      : "text-muted hover:text-text-primary hover:bg-stroke/50"
-                  } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent`}
+                      : ""
+                  } focus-visible:outline-none focus-visible:ring-2`}
                 >
                   {link.name}
                 </a>
@@ -133,17 +128,13 @@ export default function Navbar() {
           {/* Divider */}
           <span className="hidden lg:block h-4 w-px bg-stroke/60 mx-1.5 sm:mx-2" aria-hidden="true" />
 
-          {/* Email Pill with Gradient Ring Hover (matching link height and rhythm) */}
+          {/* Email Pill (Clean secondary hover) */}
           <div className="hidden lg:block">
             <a
               href="mailto:mohammedjashemofficial564@gmail.com"
-              className="relative group inline-flex rounded-full p-[1px] transition-transform duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              className="relative inline-flex rounded-full focus-visible:outline-none focus-visible:ring-2 hover-btn-secondary"
             >
-              <span
-                className="absolute inset-[-1.5px] rounded-full accent-gradient opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-[1px] pointer-events-none"
-                aria-hidden="true"
-              />
-              <span className="relative z-10 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full bg-surface border border-stroke text-xs sm:text-sm font-mono text-muted group-hover:text-text-primary transition-all duration-300 group-hover:scale-105 flex items-center justify-center">
+              <span className="relative z-10 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full border border-stroke text-xs sm:text-sm font-mono flex items-center justify-center">
                 connect@mohammedjashem
               </span>
             </a>
@@ -152,7 +143,7 @@ export default function Navbar() {
           {/* Mobile Hamburger Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden ml-2 p-1.5 rounded-full text-muted hover:text-text-primary hover:bg-stroke/50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            className="md:hidden ml-2 p-1.5 rounded-full hover-icon focus-visible:outline-none focus-visible:ring-2"
             aria-label={mobileMenuOpen ? "Close Navigation Menu" : "Open Navigation Menu"}
           >
             {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
@@ -179,7 +170,7 @@ export default function Navbar() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -20, scale: 0.96 }}
               transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="relative w-full max-w-sm rounded-3xl bg-surface/95 border border-white/10 p-6 shadow-2xl backdrop-blur-xl flex flex-col gap-4 z-50"
+              className="relative w-full max-w-sm rounded-3xl bg-surface border border-stroke p-6 shadow-2xl flex flex-col gap-4 z-50"
             >
               <div className="flex flex-col gap-1.5">
                 {NAV_LINKS.map((link) => {
@@ -189,10 +180,10 @@ export default function Navbar() {
                       key={link.id}
                       href={link.href}
                       onClick={(e) => handleLinkClick(e, link.href)}
-                      className={`text-sm rounded-2xl px-4 py-3 transition-all duration-200 font-medium ${
+                      className={`text-sm rounded-2xl px-4 py-3 font-medium hover-link ${
                         isActive
                           ? "text-text-primary bg-stroke/60 font-semibold"
-                          : "text-muted hover:text-text-primary hover:bg-stroke/30"
+                          : ""
                       }`}
                     >
                       {link.name}
@@ -204,7 +195,7 @@ export default function Navbar() {
               <div className="pt-4 border-t border-stroke/50 flex flex-col gap-3">
                 <a
                   href="mailto:mohammedjashemofficial564@gmail.com"
-                  className="w-full text-center py-2.5 rounded-full bg-surface border border-stroke text-xs font-mono text-muted hover:text-text-primary hover:border-accent/50 transition-colors"
+                  className="w-full text-center py-2.5 rounded-full border border-stroke text-xs font-mono hover-btn-secondary"
                 >
                   connect@mohammedjashem
                 </a>

@@ -16,8 +16,6 @@ const Github = dynamic(() => import("@/components/github/Github"), { ssr: false 
 const Contact = dynamic(() => import("@/components/contact/Contact"), { ssr: false });
 const Footer = dynamic(() => import("@/components/footer/Footer"), { ssr: false });
 const CustomCursor = dynamic(() => import("@/components/cursor/CustomCursor"), { ssr: false });
-const BackgroundEffects = dynamic(() => import("@/components/common/BackgroundEffects"), { ssr: false });
-const Spotlight = dynamic(() => import("@/components/common/Spotlight"), { ssr: false });
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
@@ -43,8 +41,6 @@ export default function Home() {
           
           <Footer />
           <CustomCursor />
-          <BackgroundEffects />
-          <Spotlight />
         </div>
       )}
     </>

@@ -12,9 +12,6 @@ export default function Skills() {
       id="skills"
       className="py-24 md:py-32 relative overflow-hidden rounded-t-[40px] -mt-10 bg-[#07060D]/90 border-t border-stroke/40 z-20 content-visibility-auto"
     >
-      {/* Ambient background energy glow */}
-      <div className="absolute top-1/3 right-0 w-96 h-96 bg-accent/[0.04] rounded-full blur-[140px] pointer-events-none -z-10" />
-
       <div className="section-container">
         {/* Section Header with Eyebrow and Italic Serif Emphasis */}
         <SectionHeader

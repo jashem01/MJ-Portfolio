@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React from "react";
 import {
   motion,
   useScroll,
@@ -13,8 +13,6 @@ import {
 } from "framer-motion";
 import HlsVideo from "@/components/common/HlsVideo";
 import SplitWords from "@/components/motion/SplitWords";
-import TiltCard from "@/components/motion/TiltCard";
-import Magnetic from "@/components/motion/Magnetic";
 import { FaEnvelope, FaLinkedinIn, FaGithub } from "react-icons/fa";
 import { MOTION_EASE } from "@/components/motion/Reveal";
 
@@ -153,7 +151,7 @@ export default function Contact() {
           </p>
         </div>
 
-        {/* Contact Action Cards with Magnetic & TiltCard */}
+        {/* Contact Action Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mt-10 sm:mt-12 md:mt-14 max-w-5xl mx-auto">
           {CONTACT_CARDS.map((card, index) => {
             const Icon = card.icon;
@@ -172,37 +170,27 @@ export default function Contact() {
                 }}
                 className={`${spanClass} h-full`}
               >
-                <Magnetic maxDistance={25} className="w-full h-full">
-                  <TiltCard maxTilt={6} className="w-full h-full">
-                    <a
-                      href={card.href}
-                      target={card.target}
-                      rel={card.rel}
-                      className="group relative block h-full rounded-3xl p-[1px] transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-                    >
-                      {/* Glowing Gradient Ring on Hover */}
-                      <div
-                        className="absolute inset-[-1.5px] rounded-3xl accent-gradient opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-[1px] pointer-events-none"
-                        aria-hidden="true"
-                      />
+                <a
+                  href={card.href}
+                  target={card.target}
+                  rel={card.rel}
+                  className="group relative block h-full rounded-3xl p-[1px] focus-visible:outline-none focus-visible:ring-2"
+                >
+                  {/* Inner Card */}
+                  <div className="relative z-10 h-full rounded-3xl bg-surface border border-stroke p-6 sm:p-7 md:p-8 flex flex-col items-center justify-center hover-card-border">
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-surface border border-stroke flex items-center justify-center text-muted group-hover:text-text-primary group-hover:border-white/20 group-hover:bg-stroke/50 transition-colors duration-200 mb-5 shadow-sm">
+                      <Icon size={22} />
+                    </div>
 
-                      {/* Inner Card */}
-                      <div className="relative z-10 h-full rounded-3xl bg-surface/90 border border-stroke p-6 sm:p-7 md:p-8 flex flex-col items-center justify-center transition-colors duration-300 group-hover:bg-surface">
-                        <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-surface border border-stroke flex items-center justify-center text-text-primary mb-5 group-hover:scale-110 group-hover:border-accent/50 group-hover:text-accent transition-all duration-300 shadow-md">
-                          <Icon size={22} />
-                        </div>
+                    <h3 className="text-base sm:text-lg font-bold text-text-primary mb-1.5 uppercase tracking-wide">
+                      {card.title}
+                    </h3>
 
-                        <h3 className="text-base sm:text-lg font-bold text-text-primary mb-1.5 uppercase tracking-wide group-hover:text-accent-lavender transition-colors duration-200">
-                          {card.title}
-                        </h3>
-
-                        <p className="text-muted text-xs sm:text-sm font-mono break-all group-hover:text-text-primary transition-colors duration-200">
-                          {card.value}
-                        </p>
-                      </div>
-                    </a>
-                  </TiltCard>
-                </Magnetic>
+                    <p className="text-muted text-xs sm:text-sm font-mono break-all group-hover:text-text-primary transition-colors duration-200">
+                      {card.value}
+                    </p>
+                  </div>
+                </a>
               </motion.div>
             );
           })}

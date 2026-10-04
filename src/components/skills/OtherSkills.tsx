@@ -3,7 +3,6 @@
 import React from "react";
 import { motion } from "framer-motion";
 import SkillProgressBar from "./SkillProgressBar";
-import TiltCard from "@/components/motion/TiltCard";
 import { MOTION_EASE } from "@/components/motion/Reveal";
 
 const OTHER_SKILLS_COL1 = [
@@ -27,52 +26,44 @@ export default function OtherSkills() {
       transition={{ duration: 0.9, delay: 0.2, ease: MOTION_EASE }}
       className="w-full"
     >
-      <TiltCard maxTilt={3} className="w-full">
-        <div className="group relative rounded-3xl p-[1px] transition-all duration-300 hover:scale-[1.005] hover:-translate-y-1">
-          {/* Gradient Ring on Hover */}
-          <div
-            className="absolute inset-[-1.5px] rounded-3xl accent-gradient opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-[1px] pointer-events-none"
-            aria-hidden="true"
-          />
+      <div className="group relative rounded-3xl p-[1px]">
+        {/* Inner Card */}
+        <div className="relative z-10 rounded-3xl bg-surface border border-stroke p-6 sm:p-8 md:p-9 hover-card-border">
+          {/* Header */}
+          <div className="flex items-center justify-between mb-8">
+            <h3 className="text-xl sm:text-2xl font-bold text-text-primary tracking-tight uppercase flex items-center gap-3">
+              <span>Other Skills</span>
+              <span className="w-2 h-2 rounded-full bg-accent opacity-70" />
+            </h3>
+            <span className="text-[10px] uppercase tracking-[0.25em] text-muted font-mono font-semibold">
+              // TOOLS &amp; WORKFLOW
+            </span>
+          </div>
 
-          {/* Inner Card */}
-          <div className="relative z-10 rounded-3xl bg-surface/90 border border-stroke p-6 sm:p-8 md:p-9 transition-colors duration-300 group-hover:bg-surface">
-            {/* Header */}
-            <div className="flex items-center justify-between mb-8">
-              <h3 className="text-xl sm:text-2xl font-bold text-text-primary tracking-tight uppercase flex items-center gap-3">
-                <span>Other Skills</span>
-                <span className="w-2 h-2 rounded-full bg-accent shadow-[0_0_10px_#A194F7] animate-pulse" />
-              </h3>
-              <span className="text-[10px] uppercase tracking-[0.25em] text-muted font-mono font-semibold">
-                // TOOLS &amp; WORKFLOW
-              </span>
+          {/* 2-Column Progress Bars Layout */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 lg:gap-x-12 gap-y-4">
+            <div className="space-y-4">
+              {OTHER_SKILLS_COL1.map((skill) => (
+                <SkillProgressBar
+                  key={skill.name}
+                  name={skill.name}
+                  level={skill.level}
+                />
+              ))}
             </div>
 
-            {/* 2-Column Progress Bars Layout */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 lg:gap-x-12 gap-y-4">
-              <div className="space-y-4">
-                {OTHER_SKILLS_COL1.map((skill) => (
-                  <SkillProgressBar
-                    key={skill.name}
-                    name={skill.name}
-                    level={skill.level}
-                  />
-                ))}
-              </div>
-
-              <div className="space-y-4">
-                {OTHER_SKILLS_COL2.map((skill) => (
-                  <SkillProgressBar
-                    key={skill.name}
-                    name={skill.name}
-                    level={skill.level}
-                  />
-                ))}
-              </div>
+            <div className="space-y-4">
+              {OTHER_SKILLS_COL2.map((skill) => (
+                <SkillProgressBar
+                  key={skill.name}
+                  name={skill.name}
+                  level={skill.level}
+                />
+              ))}
             </div>
           </div>
         </div>
-      </TiltCard>
+      </div>
     </motion.div>
   );
 }

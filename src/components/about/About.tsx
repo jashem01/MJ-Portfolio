@@ -24,9 +24,6 @@ export default function About() {
       id="about"
       className="py-24 md:py-32 relative overflow-hidden rounded-t-[40px] -mt-10 bg-[#08070E]/90 border-t border-stroke/40 z-20 content-visibility-auto"
     >
-      {/* Ambient background glow */}
-      <div className="absolute top-1/2 left-0 w-96 h-96 bg-accent/[0.04] rounded-full blur-[140px] pointer-events-none -z-10" />
-
       <div className="section-container">
         {/* Section Header with Eyebrow and Scroll-Scrubbed SplitWords Heading */}
         <div className="mb-12 sm:mb-16 md:mb-20 text-left select-none">

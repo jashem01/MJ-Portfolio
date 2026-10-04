@@ -1,29 +1,28 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 
 export default function CustomCursor() {
   const [isHovered, setIsHovered] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  const [isTouchDevice, setIsTouchDevice] = useState(true);
-  
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
-  
-  const springConfig = { damping: 28, stiffness: 350, mass: 0.35 };
+
+  const springConfig = { damping: 28, stiffness: 450, mass: 0.15 };
   const smoothX = useSpring(cursorX, springConfig);
   const smoothY = useSpring(cursorY, springConfig);
 
+  const isHoveredRef = useRef(false);
+
   useEffect(() => {
-    // Disable completely on touch devices / coarse pointers
-    if (typeof window !== "undefined") {
-      const finePointer = window.matchMedia("(pointer: fine)").matches;
-      if (!finePointer) {
-        setIsTouchDevice(true);
-        return;
-      }
-      setIsTouchDevice(false);
+    // Detect touch device
+    const mq = window.matchMedia("(hover: none) or (pointer: coarse)");
+    if (mq.matches) {
+      setIsTouchDevice(true);
+      return;
     }
 
     const moveCursor = (e: MouseEvent) => {
@@ -35,23 +34,20 @@ export default function CustomCursor() {
     const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement | null;
       if (!target) return;
-      if (
+      const isInteractive = Boolean(
         target.tagName?.toLowerCase() === "a" ||
         target.tagName?.toLowerCase() === "button" ||
         target.tagName?.toLowerCase() === "input" ||
         target.tagName?.toLowerCase() === "textarea" ||
+        target.tagName?.toLowerCase() === "select" ||
         target.closest?.("a") ||
         target.closest?.("button") ||
-        target.closest?.('[role="button"]') ||
-        target.closest?.(".hero-orbit-pill") ||
-        target.closest?.(".dashed-frame") ||
-        target.closest?.(".glass-card") ||
-        target.closest?.(".skill-pill") ||
-        target.closest?.(".group")
-      ) {
-        setIsHovered(true);
-      } else {
-        setIsHovered(false);
+        target.closest?.('[role="button"]')
+      );
+
+      if (isInteractive !== isHoveredRef.current) {
+        isHoveredRef.current = isInteractive;
+        setIsHovered(isInteractive);
       }
     };
 
@@ -80,10 +76,10 @@ export default function CustomCursor() {
 
   return (
     <div
-      className="fixed inset-0 pointer-events-none z-[999999] overflow-hidden"
+      className="fixed inset-0 pointer-events-none z-[999999] overflow-hidden hidden md:block"
       style={{
         opacity: isVisible ? 1 : 0,
-        transition: "opacity 0.25s ease",
+        transition: "opacity 0.2s ease",
       }}
       aria-hidden="true"
     >
@@ -96,15 +92,14 @@ export default function CustomCursor() {
         }}
       >
         <motion.div
-          className="rounded-full border pointer-events-none -translate-x-1/2 -translate-y-1/2"
+          className="rounded-full border border-white/40 bg-white/[0.04] pointer-events-none -translate-x-1/2 -translate-y-1/2"
           animate={{
-            width: isHovered ? 48 : 30,
-            height: isHovered ? 48 : 30,
-            borderColor: isHovered ? "rgba(161, 148, 247, 0.85)" : "rgba(161, 148, 247, 0.45)",
-            backgroundColor: isHovered ? "rgba(161, 148, 247, 0.12)" : "rgba(161, 148, 247, 0.03)",
-            boxShadow: isHovered ? "0 0 20px rgba(161, 148, 247, 0.4)" : "0 0 10px rgba(161, 148, 247, 0.15)",
+            width: isHovered ? 38 : 24,
+            height: isHovered ? 38 : 24,
+            borderColor: isHovered ? "rgba(255, 255, 255, 0.7)" : "rgba(255, 255, 255, 0.35)",
+            scale: isHovered ? 1.6 : 1,
           }}
-          transition={{ duration: 0.15, ease: "easeOut" }}
+          transition={{ duration: 0.18, ease: [0.22, 0.61, 0.36, 1] }}
         />
       </motion.div>
 
@@ -116,15 +111,7 @@ export default function CustomCursor() {
           y: cursorY,
         }}
       >
-        <motion.div
-          className="w-1.5 h-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none"
-          animate={{
-            scale: isHovered ? 1.6 : 1,
-            backgroundColor: isHovered ? "#A194F7" : "#FFFFFF",
-            boxShadow: isHovered ? "0 0 10px #A194F7" : "0 0 8px #FFFFFF",
-          }}
-          transition={{ duration: 0.1 }}
-        />
+        <div className="w-1.5 h-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white pointer-events-none" />
       </motion.div>
     </div>
   );
