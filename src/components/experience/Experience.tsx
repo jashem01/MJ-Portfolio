@@ -11,27 +11,38 @@ import {
 } from "framer-motion";
 import { MOTION_EASE } from "@/components/motion/Reveal";
 
-const EXPERIENCES = [
+interface ExperienceItem {
+  company: string;
+  role: string;
+  year: string;
+  description: string;
+  points?: string[];
+}
+
+const EXPERIENCES: ExperienceItem[] = [
   {
     company: "MRG Engineering",
-    role: "Frontend Developer - React.js",
-    year: "NOW",
+    role: "Web Developer — React.js",
+    year: "Feb 2026 — Present",
     description:
-      "Developing modern web applications using React.js, building reusable UI components, collaborating on scalable frontend solutions, and improving overall user experience and performance.",
+      "Develop responsive web applications using React.js and JavaScript, with a focus on reusable UI components, responsive interfaces, and user-friendly experiences.",
+    points: [
+      "Integrating payment and email functionalities into web applications.",
+      "Collaborating on frontend and backend solutions to improve functionality, performance, and user experience.",
+      "Currently exploring Node.js and MongoDB to expand full-stack development capabilities.",
+    ],
   },
   {
     company: "Open Weaver",
     role: "Web Development Intern",
-    year: "2025",
+    year: "Jul 2025 — Aug 2025",
     description:
-      "Built responsive websites using no-code/low-code platforms, worked with AI tools for UI/UX workflows, and delivered client-ready web projects.",
-  },
-  {
-    company: "Accent Techno Soft",
-    role: "Web Development Intern",
-    year: "2021",
-    description:
-      "Worked with HTML, CSS and JavaScript. Participated in web application development and learned frontend development fundamentals.",
+      "Worked on responsive web projects using no-code and low-code development platforms along with Generative UI tools.",
+    points: [
+      "Explored modern UI/UX and web design workflows.",
+      "Contributed to client-ready projects from development and customization through final implementation.",
+      "Gained hands-on experience with modern web development and AI-assisted workflows.",
+    ],
   },
 ];
 
@@ -115,7 +126,7 @@ function ExperienceCard({
   isActive,
   isPassed,
 }: {
-  item: (typeof EXPERIENCES)[0];
+  item: ExperienceItem;
   index: number;
   isActive: boolean;
   isPassed: boolean;
@@ -123,9 +134,6 @@ function ExperienceCard({
 }) {
   const shouldReduceMotion = useReducedMotion();
   const isOdd = index % 2 !== 0;
-
-  // Description word list for staggered reveal
-  const words = item.description.split(" ");
 
   // Compute depth styles based on activation state
   const targetOpacity = shouldReduceMotion ? 1 : isActive ? 1 : isPassed ? 0.75 : 0.4;
@@ -168,7 +176,7 @@ function ExperienceCard({
           }`}
         >
           {/* Left: Role and Company */}
-          <div className="w-full lg:w-[36%] text-left relative z-10">
+          <div className="w-full lg:w-[32%] text-left relative z-10">
             {/* Role Title with Masked Entrance */}
             <div className="overflow-hidden mb-1.5">
               <motion.h3
@@ -204,11 +212,11 @@ function ExperienceCard({
           </div>
 
           {/* Centre: Year Badge */}
-          <div className="w-full lg:w-[20%] flex lg:justify-center items-center relative z-10">
+          <div className="w-full lg:w-[22%] flex lg:justify-center items-center relative z-10">
             <div className="relative">
               {/* Year Badge Body */}
               <div
-                className={`relative px-5 py-2 rounded-full border overflow-hidden transition-all duration-300 ${
+                className={`relative px-4 sm:px-5 py-2 rounded-full border overflow-hidden transition-all duration-300 ${
                   isActive
                     ? "border-accent text-white"
                     : "border-stroke bg-bg/50 text-text-primary"
@@ -223,33 +231,30 @@ function ExperienceCard({
                   className="absolute inset-0 bg-accent/[0.14] transition-transform duration-300 pointer-events-none"
                 />
 
-                <span className="relative z-10 font-display italic text-lg sm:text-xl tracking-wide font-normal">
+                <span className="relative z-10 font-display italic text-sm sm:text-base md:text-lg tracking-wide font-normal whitespace-nowrap">
                   {item.year}
                 </span>
               </div>
             </div>
           </div>
 
-          {/* Right: Description with Word Group Reveal */}
-          <div className="w-full lg:w-[44%] text-left text-muted leading-relaxed text-xs sm:text-sm border-t lg:border-t-0 pt-4 lg:pt-0 border-stroke/60 relative z-10">
-            <p className="flex flex-wrap gap-x-1">
-              {words.map((word, wordIdx) => (
-                <motion.span
-                  key={wordIdx}
-                  initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 4 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{
-                    duration: 0.35,
-                    delay: 0.2 + Math.min(wordIdx * 0.015, 0.4),
-                    ease: MOTION_EASE,
-                  }}
-                  className="inline-block"
-                >
-                  {word}
-                </motion.span>
-              ))}
-            </p>
+          {/* Right: Description & Bullet Points */}
+          <div className="w-full lg:w-[46%] text-left text-muted leading-relaxed text-xs sm:text-sm border-t lg:border-t-0 pt-4 lg:pt-0 border-stroke/60 relative z-10 space-y-3">
+            {item.description && (
+              <p className="text-text-primary/90 font-normal leading-relaxed">
+                {item.description}
+              </p>
+            )}
+            {item.points && item.points.length > 0 && (
+              <ul className="space-y-1.5">
+                {item.points.map((point, pIdx) => (
+                  <li key={pIdx} className="flex items-start gap-2.5 text-muted">
+                    <span className="w-1.5 h-1.5 rounded-full bg-accent/70 mt-1.5 flex-shrink-0" />
+                    <span className="leading-relaxed">{point}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </div>
       </div>
@@ -277,12 +282,11 @@ export default function Experience() {
   // Calculate active index with useMotionValueEvent: updates ONLY when index changes
   useMotionValueEvent(smoothProgress, "change", (latest) => {
     let nextIndex = 0;
-    if (latest < 0.35) {
+    if (EXPERIENCES.length <= 1) {
       nextIndex = 0;
-    } else if (latest < 0.70) {
-      nextIndex = 1;
     } else {
-      nextIndex = 2;
+      const step = 1 / EXPERIENCES.length;
+      nextIndex = Math.min(Math.floor(latest / step), EXPERIENCES.length - 1);
     }
     if (nextIndex !== activeIndex) {
       setActiveIndex(nextIndex);
@@ -323,7 +327,8 @@ export default function Experience() {
             {/* Anchor Nodes for each entry on the spine */}
             {EXPERIENCES.map((_, idx) => {
               const nodeActive = activeIndex === idx;
-              const topPos = idx === 0 ? "16%" : idx === 1 ? "50%" : "84%";
+              const total = EXPERIENCES.length;
+              const topPos = total === 1 ? "50%" : idx === 0 ? "25%" : "75%";
 
               return (
                 <div
@@ -367,3 +372,4 @@ export default function Experience() {
     </section>
   );
 }
+

@@ -21,7 +21,7 @@ export default function Footer() {
               <span className="w-2 h-2 rounded-full bg-accent opacity-70" />
             </h3>
             <p className="text-muted mt-1 text-xs md:text-sm font-medium">
-              Frontend Developer
+              Web Developer - React.js
             </p>
           </div>
 

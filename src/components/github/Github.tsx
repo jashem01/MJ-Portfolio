@@ -7,12 +7,18 @@ import { ArrowUpRight } from "lucide-react";
 import SectionHeader from "@/components/common/SectionHeader";
 import { MOTION_EASE } from "@/components/motion/Reveal";
 
-const SKILL_PILLS = ["React.js", "JavaScript", "Next.js", "Frontend"];
+const SKILL_PILLS = [
+  "React.js",
+  "JavaScript",
+  "Node.js",
+  "MongoDB",
+  "Agentic & Generative AI",
+];
 
 const HIGHLIGHT_CARDS = [
-  { label: "Core Focus", value: "React.js" },
-  { label: "Expertise", value: "Frontend" },
-  { label: "Currently", value: "Learning Next.js" },
+  { label: "CORE FOCUS", value: "React.js" },
+  { label: "EXPERTISE", value: "Web Development" },
+  { label: "CURRENTLY", value: "Exploring Next.js , Node.js & MongoDB" },
 ];
 
 export default function Github() {
@@ -27,7 +33,7 @@ export default function Github() {
         {/* Section Header */}
         <SectionHeader
           eyebrow="GITHUB"
-          titlePrefix="Open Source &"
+          titlePrefix="Web Development &"
           emphasizedWord="Code"
         />
 
@@ -84,9 +90,7 @@ export default function Github() {
 
               {/* Bio Paragraph */}
               <p className="text-muted max-w-2xl leading-relaxed text-sm md:text-base font-normal mb-8">
-                Passionate about building web applications with React.js
-                and continuously exploring Next.js, Tailwind CSS,
-                and modern frontend technologies.
+                Building responsive web applications with React.js and JavaScript, while exploring modern development workflows with Generative AI, Agentic AI, Node.js, and MongoDB.
               </p>
 
               {/* Skill Chips (Non-interactive) */}

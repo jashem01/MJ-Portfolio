@@ -41,11 +41,12 @@ export default function AboutText() {
             {/* Narrative Paragraphs */}
             <div className="space-y-5 text-muted text-sm sm:text-base leading-relaxed font-normal">
               <p>
-                I&apos;m a Frontend Developer specializing in React.js, UI Design, No Code Platforms,  
-                Generative AI Tools, WordPress, MS Excel and Next.js,
-                passionate about creating responsive, scalable, and user-centric
-                web applications. My focus is on building clean interfaces,
-                optimizing performance, and delivering seamless digital experiences.
+                I&apos;m a a Web Developer focused on building responsive and user-friendly web applications using React.js and JavaScript. I have hands-on experience developing reusable UI components, integrating REST APIs, and implementing features such as authentication, payment, and email integrations.
+              </p>
+
+                <p className="pt-4 border-t border-stroke/60 text-muted">
+                Alongside frontend development, I'm currently exploring Node.js and MongoDB to expand my full-stack development skills.
+                I also explore Generative AI and Agentic AI tools to improve development workflows, experiment with new approaches, and build web applications more efficiently
               </p>
 
               <p className="pt-4 border-t border-stroke/60 text-muted">

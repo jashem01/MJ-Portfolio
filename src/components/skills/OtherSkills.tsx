@@ -2,19 +2,19 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import SkillProgressBar from "./SkillProgressBar";
 import { MOTION_EASE } from "@/components/motion/Reveal";
 
-const OTHER_SKILLS_COL1 = [
-  { name: "UI Design", level: 90 },
-  { name: "Generative AI", level: 85 },
-  { name: "No-Code Platforms", level: 85 },
-];
-
-const OTHER_SKILLS_COL2 = [
-  { name: "Agentic AI", level: 85 },
-  { name: "WordPress", level: 70 },
-  { name: "MS Excel", level: 80 },
+const TOOLS_PLATFORMS = [
+  {
+    name: "Git & GitHub",
+    category: "Version Control",
+    desc: "Source Control, Branching & Collaboration",
+  },
+  {
+    name: "WordPress",
+    category: "CMS Platform",
+    desc: "CMS Architecture & Web Publishing",
+  },
 ];
 
 export default function OtherSkills() {
@@ -32,38 +32,43 @@ export default function OtherSkills() {
           {/* Header */}
           <div className="flex items-center justify-between mb-8">
             <h3 className="text-xl sm:text-2xl font-bold text-text-primary tracking-tight uppercase flex items-center gap-3">
-              <span>Other Skills</span>
+              <span>Tools & Platforms</span>
               <span className="w-2 h-2 rounded-full bg-accent opacity-70" />
             </h3>
-            <span className="text-[10px] uppercase tracking-[0.25em] text-muted font-mono font-semibold">
-              // TOOLS &amp; WORKFLOW
-            </span>
           </div>
 
-          {/* 2-Column Progress Bars Layout */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 lg:gap-x-12 gap-y-4">
-            <div className="space-y-4">
-              {OTHER_SKILLS_COL1.map((skill) => (
-                <SkillProgressBar
-                  key={skill.name}
-                  name={skill.name}
-                  level={skill.level}
-                />
-              ))}
-            </div>
-
-            <div className="space-y-4">
-              {OTHER_SKILLS_COL2.map((skill) => (
-                <SkillProgressBar
-                  key={skill.name}
-                  name={skill.name}
-                  level={skill.level}
-                />
-              ))}
-            </div>
+          {/* 3-Column Tools & Platforms Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {TOOLS_PLATFORMS.map((tool, index) => (
+              <motion.div
+                key={tool.name}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-5%" }}
+                transition={{
+                  duration: 0.6,
+                  delay: 0.25 + index * 0.08,
+                  ease: MOTION_EASE,
+                }}
+                className="flex flex-col justify-between p-5 rounded-2xl border border-stroke bg-surface hover-card-border"
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <h4 className="text-sm font-bold text-text-primary uppercase tracking-wide">
+                    {tool.name}
+                  </h4>
+                  <span className="text-[9px] font-mono text-accent uppercase tracking-wider px-2 py-0.5 rounded bg-accent/5 border border-accent/20">
+                    {tool.category}
+                  </span>
+                </div>
+                <p className="text-xs text-muted font-normal">
+                  {tool.desc}
+                </p>
+              </motion.div>
+            ))}
           </div>
         </div>
       </div>
     </motion.div>
   );
 }
+

@@ -4,10 +4,19 @@ import React from "react";
 import { motion } from "framer-motion";
 import { MOTION_EASE } from "@/components/motion/Reveal";
 
-const EXPLORING_TECH = [
-  { name: "Next.js", desc: "Full-stack React framework" },
-  { name: "Tailwind CSS", desc: "Utility-first CSS framework" },
-  { name: "React Three Fiber", desc: "3D graphics with React & Three.js" },
+const AI_DEV_SKILLS = [
+  {
+    name: "Generative AI Tools",
+    desc: "Prompt Engineering & Generative Workflows",
+  },
+  {
+    name: "Agentic AI Tools",
+    desc: "Autonomous Agents & Workflow Automation",
+  },
+  {
+    name: "No-Code Development",
+    desc: "Rapid Prototyping & Visual Systems",
+  },
 ];
 
 export default function LearningSkills() {
@@ -26,17 +35,14 @@ export default function LearningSkills() {
             {/* Card Header */}
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-xl sm:text-2xl font-bold text-text-primary tracking-tight uppercase flex items-center gap-3">
-                <span>Exploring New Technologies</span>
+                <span>AI & Development</span>
                 <span className="w-2 h-2 rounded-full bg-accent opacity-70" />
               </h3>
-              <span className="text-[10px] uppercase tracking-[0.25em] text-muted font-mono font-semibold">
-                // ACTIVE
-              </span>
             </div>
 
-            {/* Non-interactive exploration rows */}
+            {/* AI & Development rows */}
             <div className="flex flex-col gap-3 sm:gap-3.5">
-              {EXPLORING_TECH.map((tech, index) => (
+              {AI_DEV_SKILLS.map((tech, index) => (
                 <motion.div
                   key={tech.name}
                   initial={{ opacity: 0, y: 20 }}
@@ -71,3 +77,4 @@ export default function LearningSkills() {
     </motion.div>
   );
 }
+

@@ -2,9 +2,7 @@
 
 import React from "react";
 import SectionHeader from "@/components/common/SectionHeader";
-import CoreSkills from "./CoreSkills";
-import LearningSkills from "./LearningSkills";
-import OtherSkills from "./OtherSkills";
+import Skills3DCarousel from "./Skills3DCarousel";
 
 export default function Skills() {
   return (
@@ -20,22 +18,9 @@ export default function Skills() {
           emphasizedWord="Tools"
         />
 
-        {/* Bento Grid Layout */}
-        <div className="flex flex-col gap-6 lg:gap-8">
-          {/* Row 1 — Core (col-span-7) + Exploring (col-span-5) */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch">
-            <div className="lg:col-span-7 h-full">
-              <CoreSkills />
-            </div>
-            <div className="lg:col-span-5 h-full">
-              <LearningSkills />
-            </div>
-          </div>
-
-          {/* Row 2 — Other Skills (col-span-12 in two columns) */}
-          <div className="w-full">
-            <OtherSkills />
-          </div>
+        {/* 3D Rotating Skill-Card Carousel */}
+        <div className="w-full mt-6 md:mt-8">
+          <Skills3DCarousel />
         </div>
       </div>
     </section>
