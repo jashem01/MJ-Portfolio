@@ -1,135 +1,198 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-
-const ROTATING_WORDS = ["Design", "Create", "Inspire"];
-const TOTAL_DURATION_MS = 1200;
-const WORD_INTERVAL_MS = 400;
-const EXIT_DELAY_MS = 150;
+import React, { useEffect, useState, useRef, useCallback } from "react";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import WorkspaceScene from "./WorkspaceScene";
+import WorkspaceLoadingBar from "./WorkspaceLoadingBar";
 
 interface LoadingScreenProps {
   onComplete?: () => void;
 }
 
+const MIN_INTRO_DURATION_MS = 2100; // Sensible minimum duration to experience scene without screen flash
+const MAX_SAFETY_TIMEOUT_MS = 5000; // Safety bailout to guarantee progress never hangs
+const COMPLETION_HOLD_MS = 600;      // Brief hold of the 100% completed scene before transition
+const TRANSITION_DURATION_S = 0.65;  // Cinematic exit transition duration
+
 export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
   const [show, setShow] = useState(true);
-  const [count, setCount] = useState(0);
-  const [wordIndex, setWordIndex] = useState(0);
+  const [progress, setProgress] = useState(0);
+  const [isCompleted, setIsCompleted] = useState(false);
+
+  const shouldReduceMotion = useReducedMotion();
   const startTimeRef = useRef<number | null>(null);
   const rafRef = useRef<number | null>(null);
+  const completionTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const safetyTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const assetsReadyRef = useRef(false);
+
+  // Synchronize ref for frame loop access
+  const handleAssetsLoaded = useCallback(() => {
+    assetsReadyRef.current = true;
+  }, []);
 
   useEffect(() => {
-    // Check sessionStorage to show once per session
+    // 1. Session & Reload Check
     if (typeof window !== "undefined") {
-      const hasLoaded = sessionStorage.getItem("portfolio_loaded");
-      if (hasLoaded === "true") {
-        setShow(false);
-        onComplete?.();
+      const urlParams = new URLSearchParams(window.location.search);
+      const forceIntro = urlParams.get("intro") === "true";
+      const skipIntro = urlParams.get("skipIntro") === "true";
+
+      if (skipIntro) {
+        setTimeout(() => {
+          setShow(false);
+          onComplete?.();
+        }, 0);
         return;
+      }
+
+      // Check if page load was a user refresh
+      const navEntries = performance.getEntriesByType?.("navigation");
+      const isReload =
+        navEntries && navEntries.length > 0
+          ? (navEntries[0] as PerformanceNavigationTiming).type === "reload"
+          : false;
+
+      if (isReload || forceIntro) {
+        sessionStorage.removeItem("portfolio_loaded");
+      } else {
+        const hasLoaded = sessionStorage.getItem("portfolio_loaded");
+        if (hasLoaded === "true") {
+          setTimeout(() => {
+            setShow(false);
+            onComplete?.();
+          }, 0);
+          return;
+        }
       }
     }
 
-    // Word rotation interval
-    const wordTimer = setInterval(() => {
-      setWordIndex((prev) => (prev + 1) % ROTATING_WORDS.length);
-    }, WORD_INTERVAL_MS);
+    // 2. Preload Essential Assets (Workspace Image & Typing Layers, Video Poster, Fonts)
+    const essentialImages = [
+      "/images/MJ-character-seated-seamless.png",
+      "/images/MJ-head-feathered.png",
+      "/images/MJ-hand-left.png",
+      "/images/MJ-hand-right.png",
+      "/videos/laptop-poster.jpg",
+    ];
 
-    // requestAnimationFrame Counter 000 -> 100 over 1200ms
-    const animateCount = (timestamp: number) => {
-      if (!startTimeRef.current) startTimeRef.current = timestamp;
-      const elapsed = timestamp - startTimeRef.current;
-      const progress = Math.min(elapsed / TOTAL_DURATION_MS, 1);
-      
-      // Smooth cubic ease out
-      const easedProgress = 1 - Math.pow(1 - progress, 2.5);
-      const currentVal = Math.floor(easedProgress * 100);
-      setCount(currentVal);
+    let loadedCount = 0;
+    const totalAssets = essentialImages.length + 1; // +1 for fonts
 
-      if (progress < 1) {
-        rafRef.current = requestAnimationFrame(animateCount);
-      } else {
-        setCount(100);
-        setTimeout(() => {
-          if (typeof window !== "undefined") {
-            sessionStorage.setItem("portfolio_loaded", "true");
-          }
-          setShow(false);
-          onComplete?.();
-        }, EXIT_DELAY_MS);
+    const checkComplete = () => {
+      loadedCount++;
+      if (loadedCount >= totalAssets) {
+        handleAssetsLoaded();
       }
     };
 
-    rafRef.current = requestAnimationFrame(animateCount);
+    essentialImages.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+      img.onload = checkComplete;
+      img.onerror = checkComplete; // Fail-safe fallback
+    });
+
+    if (typeof document !== "undefined" && document.fonts) {
+      document.fonts.ready
+        .then(() => checkComplete())
+        .catch(() => checkComplete());
+    } else {
+      checkComplete();
+    }
+
+    // 3. Safety Timeout
+    safetyTimerRef.current = setTimeout(() => {
+      if (!assetsReadyRef.current) {
+        handleAssetsLoaded();
+      }
+    }, MAX_SAFETY_TIMEOUT_MS);
+
+    // 4. Smooth 0% -> 100% Progress Loop using requestAnimationFrame
+    const animateProgress = (timestamp: number) => {
+      if (!startTimeRef.current) startTimeRef.current = timestamp;
+      const elapsed = timestamp - startTimeRef.current;
+      const rawProgress = Math.min(elapsed / MIN_INTRO_DURATION_MS, 1);
+
+      // Smooth ease-out cubic curve
+      const easedTimeProgress = 1 - Math.pow(1 - rawProgress, 2.4);
+      let calculatedVal = Math.floor(easedTimeProgress * 100);
+
+      // Do not allow progress to reach 100% before essential assets are ready
+      if (!assetsReadyRef.current && calculatedVal >= 88) {
+        calculatedVal = 88;
+      }
+
+      setProgress(calculatedVal);
+
+      if (calculatedVal < 100) {
+        rafRef.current = requestAnimationFrame(animateProgress);
+      } else {
+        // Reached 100%
+        setProgress(100);
+        setIsCompleted(true);
+
+        if (typeof window !== "undefined") {
+          sessionStorage.setItem("portfolio_loaded", "true");
+        }
+
+        // Brief hold of completed scene before cinematic exit transition
+        completionTimerRef.current = setTimeout(() => {
+          onComplete?.();
+          setShow(false);
+        }, COMPLETION_HOLD_MS);
+      }
+    };
+
+    rafRef.current = requestAnimationFrame(animateProgress);
 
     return () => {
-      clearInterval(wordTimer);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      if (completionTimerRef.current) clearTimeout(completionTimerRef.current);
+      if (safetyTimerRef.current) clearTimeout(safetyTimerRef.current);
     };
-  }, [onComplete]);
+  }, [onComplete, handleAssetsLoaded]);
 
   return (
-    <AnimatePresence>
+    <AnimatePresence mode="wait">
       {show && (
         <motion.div
+          key="workspace-intro-screen"
           initial={{ opacity: 1 }}
           exit={{
             opacity: 0,
-            transition: { duration: 0.35, ease: [0.25, 0.1, 0.25, 1] },
+            scale: shouldReduceMotion ? 1 : 1.03,
+            filter: shouldReduceMotion ? "none" : "blur(4px)",
+            transition: {
+              duration: TRANSITION_DURATION_S,
+              ease: [0.22, 1, 0.36, 1],
+            },
           }}
-          className="fixed inset-0 z-[9999] bg-bg flex flex-col justify-between p-6 sm:p-10 md:p-16 select-none overflow-hidden"
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            width: "100vw",
+            height: "100svh",
+            minHeight: "100svh",
+            backgroundColor: "#000000",
+            zIndex: 99999,
+          }}
+          className="fixed inset-0 z-[99999] bg-[#000000] text-white flex flex-col items-center justify-center p-4 sm:p-6 select-none overflow-hidden"
           aria-live="polite"
-          aria-label="Loading page"
+          aria-label="Developer Workspace Loading Experience"
         >
-          {/* Subtle Ambient Radial Lights */}
-          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] rounded-full bg-[radial-gradient(circle,rgba(161,148,247,0.12)_0%,rgba(124,101,246,0.03)_50%,transparent_70%)] blur-[140px] pointer-events-none" />
+          {/* Centered Composition: Standalone Avatar & Loading Section as One Centered Unit */}
+          <div className="flex flex-col items-center justify-center w-full max-w-xs sm:max-w-sm">
+            {/* 1. Standalone Seated 3D Avatar (Reduced to ~60%, Pure Black Background, Zero Card Frame) */}
+            <WorkspaceScene isCompleted={isCompleted} />
 
-          {/* Top-Left: "Portfolio" Eyebrow */}
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="flex items-center gap-2.5 relative z-10"
-          >
-            <span className="w-8 h-px bg-stroke" aria-hidden="true" />
-            <span className="text-xs uppercase tracking-[0.3em] text-muted font-semibold">
-              Portfolio
-            </span>
-          </motion.div>
-
-          {/* Centre: Rotating Words ("Design", "Create", "Inspire") */}
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
-            <AnimatePresence mode="wait">
-              <motion.span
-                key={ROTATING_WORDS[wordIndex]}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.45, ease: [0.25, 0.1, 0.25, 1] }}
-                className="font-display italic text-4xl sm:text-6xl md:text-7xl lg:text-8xl text-text-primary/80 tracking-tight text-center px-4"
-              >
-                {ROTATING_WORDS[wordIndex]}
-              </motion.span>
-            </AnimatePresence>
-          </div>
-
-          {/* Bottom Row: Counter (Bottom-Right) */}
-          <div className="flex items-end justify-end w-full relative z-10">
-            <div className="text-right">
-              <span className="font-display text-6xl sm:text-8xl md:text-9xl lg:text-[10rem] tabular-nums font-normal text-text-primary leading-none tracking-tight">
-                {String(count).padStart(3, "0")}
-              </span>
+            {/* 2. Loading Section Directly Underneath with Consistent Vertical Spacing */}
+            <div className="w-full mt-3 sm:mt-3.5">
+              <WorkspaceLoadingBar progress={progress} isCompleted={isCompleted} />
             </div>
-          </div>
-
-          {/* Bottom Progress Bar */}
-          <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-stroke/50 overflow-hidden z-20">
-            <motion.div
-              className="h-full accent-gradient origin-left shadow-[0_0_8px_rgba(161,148,247,0.35)]"
-              style={{
-                width: `${count}%`,
-              }}
-            />
           </div>
         </motion.div>
       )}
